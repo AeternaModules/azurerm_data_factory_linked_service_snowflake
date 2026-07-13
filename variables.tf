@@ -30,70 +30,6 @@ EOT
       secret_name         = string
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        length(v.connection_string) > 0
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.key_vault_password == null || (length(v.key_vault_password.linked_service_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.key_vault_password == null || (length(v.key_vault_password.secret_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.description == null || (length(v.description) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.integration_runtime_name == null || (length(v.integration_runtime_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.parameters == null || (length(v.parameters) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.annotations == null || (length(v.annotations) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_snowflakes : (
-        v.additional_properties == null || (length(v.additional_properties) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_data_factory_linked_service_snowflake's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -104,5 +40,29 @@ EOT
   #   source:    [from factories.ValidateFactoryID] !ok
   # path: data_factory_id
   #   source:    [from factories.ValidateFactoryID] err != nil
+  # path: connection_string
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: key_vault_password.linked_service_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: key_vault_password.secret_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: description
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: integration_runtime_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: parameters[*]
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: annotations[*]
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: additional_properties[*]
+  #   condition: length(value) > 0
+  #   message:   must not be empty
 }
 
